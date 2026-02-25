@@ -1,0 +1,13 @@
+cache/
+*.pyc
+__pycache__/
+preview.png
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Emacs backup/temp files
+*~
+\#*\#
+.*.~undo-tree~

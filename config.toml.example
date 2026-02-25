@@ -1,0 +1,29 @@
+[twit]
+# Credentials via env: TWIT_APP_ID, TWIT_APP_KEY
+
+[memberful]
+api_url = "https://twit.memberful.com/api/graphql"
+# Credentials via env: MEMBERFUL_API_USER_ID, MEMBERFUL_API_KEY
+
+[youtube]
+# Credentials via env: YOUTUBE_API_KEY
+
+[anthropic]
+model = "claude-haiku-4-5-20251001"
+# Credentials via env: ANTHROPIC_API_KEY (or CLAUDE_API_KEY)
+
+[pi]
+host = "192.168.88.14"
+user = "leo"
+image_path = "/home/leo/dashboard.png"
+display_script = "/home/leo/dashboard-venv/bin/python3 /home/leo/display.py"
+
+[discord]
+# Credentials via env: DISCORD_WEBHOOK_URL
+
+[discourse]
+base_url = "https://twit.community"
+# Credentials via env: DISCOURSE_API_KEY, DISCOURSE_API_USERNAME
+
+[display]
+memberful_refresh_hours = 0
