@@ -177,6 +177,7 @@ def promo(dry_run, force, no_ai, no_discourse):
                 show_code=show_code,
                 episode_number=episode_number or "?",
                 show_label=show_label,
+                episode_title=episode.get("label", ""),
                 body=promo_text,
             )
 

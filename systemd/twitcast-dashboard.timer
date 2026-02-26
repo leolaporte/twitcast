@@ -2,9 +2,8 @@
 Description=TWiT E-Ink Dashboard timer
 
 [Timer]
-OnCalendar=*-*-* 06,12,18:00:00
+OnCalendar=*-*-* 11:00:00 US/Pacific
 Persistent=true
-RandomizedDelaySec=300
 
 [Install]
 WantedBy=timers.target

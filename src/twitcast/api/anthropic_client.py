@@ -16,13 +16,20 @@ Produce a JSON object with exactly these keys:
 
 Return ONLY valid JSON, no markdown fences."""
 
-PROMO_SYSTEM_TEMPLATE = """Write a LinkedIn-style promotional post as Leo Laporte for {show_name} #{number} - "{title}".
+PROMO_SYSTEM_TEMPLATE = """Write a casual, conversational post as Leo Laporte for {show_name} #{number} - "{title}".
 Use this voice/tone: {voice_profile}
 Based on this summary: {summary}
 
 Additional topics covered: {topics}
 
-150-200 words. No emoji. First person. Include the episode URL and relevant hashtags.
+Format:
+- One short intro sentence (first person, conversational — not salesy)
+- 3-5 emoji bullet points highlighting what's in the episode (one line each, keep them punchy)
+- One brief closing line inviting discussion
+- Episode URL on its own line
+- Relevant hashtags on the final line
+
+Keep it under 150 words. Sound like a person sharing something they enjoyed, not a marketer.
 Episode URL: {episode_url}"""
 
 

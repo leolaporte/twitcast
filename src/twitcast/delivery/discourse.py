@@ -35,12 +35,13 @@ def post_topic(
     show_code: str,
     episode_number: str | int,
     show_label: str,
+    episode_title: str,
     body: str,
     category_id: int | None = None,
 ) -> dict | None:
     """Create a new Discourse topic.
 
-    Title format: "{show_code} {episode_number}: {show_label}"
+    Title format: "{show_code} {episode_number}: {episode_title}"
     Category: show-specific subcategory under TWiT Shows, or TWiT Shows parent.
     Tag: "episode"
 
@@ -51,7 +52,7 @@ def post_topic(
         log.info("No Discourse API credentials configured, skipping")
         return None
 
-    title = f"{show_code} {episode_number}: {show_label}"
+    title = f"{show_code} {episode_number}: {episode_title}"
 
     if category_id is None:
         category_id = SHOW_CATEGORY_IDS.get(show_label, TWIT_SHOWS_CATEGORY_ID)
