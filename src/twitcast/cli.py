@@ -15,6 +15,7 @@ log = logging.getLogger(__name__)
 
 STATE_PATH = CACHE_DIR / "transcript-promo-state.json"
 MAX_EPISODE_AGE_DAYS = 14
+MASTODON_SHOW_CODES = {"TWiT", "MBW", "WW", "SN", "IM"}
 
 
 def _load_state() -> dict:
@@ -101,11 +102,14 @@ def dashboard(preview, no_discord, no_pi):
 @click.option("--force", is_flag=True, help="Ignore state, post for all recent episodes with transcripts")
 @click.option("--no-ai", is_flag=True, help="Use template mode instead of Haiku AI")
 @click.option("--no-discourse", is_flag=True, help="Skip Discourse posting")
-def promo(dry_run, force, no_ai, no_discourse):
+@click.option("--no-mastodon", is_flag=True, help="Skip Mastodon posting")
+def promo(dry_run, force, no_ai, no_discourse, no_mastodon):
     """Generate and post transcript promos for recent episodes."""
+    from twitcast.api.anthropic_client import shorten_for_mastodon
     from twitcast.api.twit import fetch_recent_episodes
     from twitcast.delivery.discord import post_text
     from twitcast.delivery.discourse import post_topic
+    from twitcast.delivery.mastodon import post_status
     from twitcast.promo.builder import build_ai_promo, build_template_promo
     from twitcast.shows import extract_show_code
     from twitcast.transcript.resolver import resolve_transcript_url
@@ -180,6 +184,10 @@ def promo(dry_run, force, no_ai, no_discourse):
                 episode_title=episode.get("label", ""),
                 body=promo_text,
             )
+
+        if not no_mastodon and show_code in MASTODON_SHOW_CODES:
+            mastodon_text = shorten_for_mastodon(config, promo_text) if not no_ai else None
+            post_status(config, mastodon_text or promo_text)
 
         log.info("Posted promo for %s #%s (episode %s)", show_label, episode_number, episode_id)
         posted_ids = posted_ids | {episode_id}

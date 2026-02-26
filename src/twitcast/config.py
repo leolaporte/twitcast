@@ -22,6 +22,7 @@ ENV_MAP = {
     ("discord", "webhook_url"): "DISCORD_WEBHOOK_URL",
     ("discourse", "api_key"): "DISCOURSE_API_KEY",
     ("discourse", "api_username"): "DISCOURSE_API_USERNAME",
+    ("mastodon", "access_token"): "MASTODON_ACCESS_TOKEN",
 }
 
 
@@ -70,6 +71,13 @@ class DiscourseConfig:
 
 
 @dataclass(frozen=True)
+class MastodonConfig:
+    instance_url: str = "https://twit.social"
+    access_token: str = ""
+    visibility: str = "public"
+
+
+@dataclass(frozen=True)
 class DisplayConfig:
     memberful_refresh_hours: float = 4
 
@@ -83,6 +91,7 @@ class Config:
     pi: PiConfig = field(default_factory=PiConfig)
     discord: DiscordConfig = field(default_factory=DiscordConfig)
     discourse: DiscourseConfig = field(default_factory=DiscourseConfig)
+    mastodon: MastodonConfig = field(default_factory=MastodonConfig)
     display: DisplayConfig = field(default_factory=DisplayConfig)
 
 
@@ -114,5 +123,6 @@ def load_config(config_path: Path | None = None) -> Config:
         pi=PiConfig(**{k: v for k, v in raw.get("pi", {}).items() if k in PiConfig.__dataclass_fields__}),
         discord=DiscordConfig(**{k: v for k, v in raw.get("discord", {}).items() if k in DiscordConfig.__dataclass_fields__}),
         discourse=DiscourseConfig(**{k: v for k, v in raw.get("discourse", {}).items() if k in DiscourseConfig.__dataclass_fields__}),
+        mastodon=MastodonConfig(**{k: v for k, v in raw.get("mastodon", {}).items() if k in MastodonConfig.__dataclass_fields__}),
         display=DisplayConfig(**{k: v for k, v in raw.get("display", {}).items() if k in DisplayConfig.__dataclass_fields__}),
     )

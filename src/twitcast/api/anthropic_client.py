@@ -16,6 +16,10 @@ Produce a JSON object with exactly these keys:
 
 Return ONLY valid JSON, no markdown fences."""
 
+MASTODON_SYSTEM = """Condense this promotional post to fit within 500 characters (including the URL and hashtags).
+Keep the same casual tone. Use 2-3 emoji bullet points max. Keep the episode URL and hashtags.
+Return ONLY the shortened post, nothing else."""
+
 PROMO_SYSTEM_TEMPLATE = """Write a casual, conversational post as Leo Laporte for {show_name} #{number} - "{title}".
 Use this voice/tone: {voice_profile}
 Based on this summary: {summary}
@@ -108,4 +112,27 @@ def write_promo(
         return message.content[0].text
     except anthropic.APIError as e:
         log.error("Anthropic API promo generation failed: %s", e)
+        return None
+
+
+def shorten_for_mastodon(config: Config, promo_text: str) -> str | None:
+    """Condense a promo post to <=500 characters for Mastodon. Returns shortened text."""
+    if not config.anthropic.api_key:
+        log.error("No Anthropic API key configured")
+        return None
+
+    client = _get_client(config)
+    try:
+        message = client.messages.create(
+            model=config.anthropic.model,
+            max_tokens=512,
+            system=MASTODON_SYSTEM,
+            messages=[{
+                "role": "user",
+                "content": promo_text,
+            }],
+        )
+        return message.content[0].text
+    except anthropic.APIError as e:
+        log.error("Anthropic API mastodon shortening failed: %s", e)
         return None

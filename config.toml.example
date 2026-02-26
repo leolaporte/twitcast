@@ -25,5 +25,10 @@ display_script = "/home/leo/dashboard-venv/bin/python3 /home/leo/display.py"
 base_url = "https://twit.community"
 # Credentials via env: DISCOURSE_API_KEY, DISCOURSE_API_USERNAME
 
+[mastodon]
+instance_url = "https://twit.social"
+visibility = "public"
+# Credentials via env: MASTODON_ACCESS_TOKEN
+
 [display]
 memberful_refresh_hours = 0
