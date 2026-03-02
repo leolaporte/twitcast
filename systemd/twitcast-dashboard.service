@@ -5,7 +5,8 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-EnvironmentFile=%h/.secrets.env
+ExecStartPre=%h/.local/bin/decrypt-secrets
+EnvironmentFile=%t/secrets/secrets.env
 ExecStart=%h/Projects/twitcast/.venv/bin/twitcast dashboard
 WorkingDirectory=%h/Projects/twitcast
 
