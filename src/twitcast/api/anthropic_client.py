@@ -16,24 +16,22 @@ Produce a JSON object with exactly these keys:
 
 Return ONLY valid JSON, no markdown fences."""
 
-MASTODON_SYSTEM = """Condense this promotional post to fit within 500 characters (including the URL and hashtags).
-Keep the same casual tone. Use 2-3 emoji bullet points max. Keep the episode URL and hashtags.
+MASTODON_SYSTEM = """Condense this announcement to fit within 500 characters (including the URL and hashtags).
+Keep it factual and brief. Use 2-3 bullet points max, no emoji. Keep the episode URL and hashtags.
 Return ONLY the shortened post, nothing else."""
 
-PROMO_SYSTEM_TEMPLATE = """Write a casual, conversational post as Leo Laporte for {show_name} #{number} - "{title}".
-Use this voice/tone: {voice_profile}
+PROMO_SYSTEM_TEMPLATE = """Write a straightforward episode announcement for {show_name} #{number} - "{title}".
 Based on this summary: {summary}
 
 Additional topics covered: {topics}
 
 Format:
-- One short intro sentence (first person, conversational — not salesy)
-- 3-5 emoji bullet points highlighting what's in the episode (one line each, keep them punchy)
-- One brief closing line inviting discussion
+- One sentence stating the episode is available
+- 3-5 bullet points listing topics covered (plain text, no emoji)
 - Episode URL on its own line
 - Relevant hashtags on the final line
 
-Keep it under 150 words. Sound like a person sharing something they enjoyed, not a marketer.
+Keep it under 120 words. Factual and informative — this is an announcement, not a sales pitch.
 Episode URL: {episode_url}"""
 
 
