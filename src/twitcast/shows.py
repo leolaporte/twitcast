@@ -17,7 +17,7 @@ SHOW_CODES: dict[str, str] = {
     "untitled-linux-show": "ULS",
     "ai-inside": "AI",
     "twit-plus": "PLUS",
-    "twit-plus-club-shows": "PLUSSHOWS",
+    "twit-plus-club-shows": "CLUB",
     "twit-plus-news": "PLUSNEWS",
     "total-leo": "Total Leo",
     "total-mikah": "MIKAH",

@@ -3,6 +3,7 @@
 import json
 import logging
 import sys
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -112,7 +113,6 @@ def promo(dry_run, force, no_ai, no_discourse, no_mastodon):
     from twitcast.delivery.mastodon import post_status
     from twitcast.promo.builder import build_ai_promo, build_template_promo
     from twitcast.shows import extract_show_code
-    from twitcast.transcript.resolver import resolve_transcript_url
 
     config = load_config()
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
@@ -148,24 +148,16 @@ def promo(dry_run, force, no_ai, no_discourse, no_mastodon):
         show_code = show.get("shortCode", "").strip()
         if not show_code:
             show_code = extract_show_code(episode.get("cleanPath", ""))
+        if show_code == "PLUSSHOWS":
+            show_code = "CLUB"
         episode_number = episode.get("episodeNumber")
 
-        transcript_url, transcript_html, attempted_urls = resolve_transcript_url(
-            show_slug, show_label, episode_number
-        )
-        if not transcript_url:
-            log.info(
-                "No transcript yet for %s #%s (episode %s), will retry later",
-                show_label, episode_number, episode_id,
-            )
-            continue
-
-        # Generate promo copy
+        # Generate promo copy from show notes
         promo_text = None
         if not no_ai:
-            promo_text = build_ai_promo(config, episode, transcript_url, transcript_html)
+            promo_text = build_ai_promo(config, episode)
         if promo_text is None:
-            promo_text = build_template_promo(episode, transcript_url, transcript_html)
+            promo_text = build_template_promo(episode)
 
         if dry_run:
             click.echo(f"--- {show_label} #{episode_number} (episode {episode_id}) ---")
@@ -192,6 +184,9 @@ def promo(dry_run, force, no_ai, no_discourse, no_mastodon):
         log.info("Posted promo for %s #%s (episode %s)", show_label, episode_number, episode_id)
         posted_ids = posted_ids | {episode_id}
         posted_count += 1
+
+        # Delay between posts so Discord shows them as separate messages
+        time.sleep(3)
 
     if not dry_run:
         _save_state({

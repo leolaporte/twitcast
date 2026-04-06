@@ -38,6 +38,8 @@ Units symlinked from `systemd/` into `~/.config/systemd/user/`.
 - 3-5 emoji bullet points (not long paragraphs)
 - Under 150 words
 - Per-show voice profiles in `src/twitcast/promo/voices.py`
+- Mastodon posts get a second Haiku pass to condense to <=500 chars (twit.social limit)
+- Truncation fallback at 497 chars if AI shortening fails
 
 ## Key Conventions
 
@@ -46,3 +48,5 @@ Units symlinked from `systemd/` into `~/.config/systemd/user/`.
 - State tracking in `cache/transcript-promo-state.json` (posted episode IDs)
 - TTL-based JSON file caching for expensive API calls (Memberful, YouTube)
 - AI falls back to template mode on failure
+- Adding a new delivery target: add dataclass in `config.py`, env var in `ENV_MAP`, module in `delivery/`, wire into `cli.py` promo loop
+- Old `twit-*` systemd timers were cleaned up — only `twitcast-*` timers should exist
